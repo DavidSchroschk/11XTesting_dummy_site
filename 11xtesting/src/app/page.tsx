@@ -1,19 +1,33 @@
 'use client';
 
 import Link from 'next/link';
-
-const posts = [
-  { id: '1', title: 'How to Use Next.js 13', summary: 'Learn the basics of App Router in Next.js 13.' },
-  { id: '2', title: 'Understanding Server Components', summary: 'A deep dive into server and client components.' },
-  { id: '3', title: 'Deploying with Vercel', summary: 'Steps to deploy your Next.js app easily.' },
-];
+import { useRouter } from 'next/navigation';
+import { useAuth } from './context/AuthContext';
+import { useBlog } from './context/BlogContext';
 
 export default function Home() {
+  const { isAuthenticated, logout } = useAuth();
+  const { posts } = useBlog();
+  const router = useRouter();
+
+  const handleCreatePost = () => {
+    router.push('/create-post');
+  };
+
   return (
     <main style={styles.main}>
       <header style={styles.header}>
         <h1 style={styles.title}>My Blog</h1>
-        <Link href="/login" style={styles.loginButton}>Login</Link>
+        <div style={{ display: 'flex', gap: '1rem' }}>
+          {isAuthenticated ? (
+            <>
+              <button onClick={handleCreatePost} style={styles.button}>Create Post</button>
+              <button onClick={logout} style={styles.button}>Logout</button>
+            </>
+          ) : (
+            <Link href="/login" style={styles.button}>Login</Link>
+          )}
+        </div>
       </header>
 
       <section style={styles.blogList}>
@@ -46,12 +60,14 @@ const styles = {
   title: {
     fontSize: '2rem',
   },
-  loginButton: {
+  button: {
     textDecoration: 'none',
     background: 'var(--accent)',
     color: '#fff',
     padding: '0.5rem 1rem',
     borderRadius: '6px',
+    cursor: 'pointer',
+    border: 'none',
   },
   blogList: {
     display: 'flex',
