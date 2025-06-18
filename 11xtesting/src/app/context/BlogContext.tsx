@@ -1,5 +1,5 @@
 'use client';
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 
 export type BlogPost = {
   id: string;
@@ -19,39 +19,47 @@ type BlogContextType = {
 const BlogContext = createContext<BlogContextType | null>(null);
 
 export function BlogProvider({ children }: { children: ReactNode }) {
-  const [posts, setPosts] = useState<BlogPost[]>([
-    {
-      id: '1',
-      title: 'How to Use Next.js 13',
-      summary: 'Learn the basics of App Router in Next.js 13.',
-      body: 'Full article content here...',
-    },
-    {
-      id: '2',
-      title: 'Understanding Server Components',
-      summary: 'A deep dive into server and client components.',
-      body: 'In-depth content goes here...',
-    },
-    {
-      id: '3',
-      title: 'Deploying with Vercel',
-      summary: 'Steps to deploy your Next.js app easily.',
-      body: 'Deployment guide content here...',
-    },
-  ]);
+  const [posts, setPosts] = useState<BlogPost[]>([]);
 
-  const addPost = (post: Omit<BlogPost, 'id'>) => {
-    const id = crypto.randomUUID();
-    setPosts((prev) => [...prev, { id, ...post }]);
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const res = await fetch('/api/posts');
+      if (res.ok) {
+        const data: BlogPost[] = await res.json();
+        setPosts(data);
+      }
+    };
+    fetchPosts();
+  }, []);
+
+  const addPost = async (post: Omit<BlogPost, 'id'>) => {
+    const res = await fetch('/api/posts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(post),
+    });
+    if (res.ok) {
+      const created: BlogPost = await res.json();
+      setPosts((prev) => [...prev, created]);
+    }
   };
 
-  const updatePost = (id: string, updated: Omit<BlogPost, 'id'>) => {
-    setPosts((prev) =>
-        prev.map((post) => (post.id === id ? { id, ...updated } : post))
-    );
+  const updatePost = async (id: string, updated: Omit<BlogPost, 'id'>) => {
+    const res = await fetch(`/api/posts/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updated),
+    });
+    if (res.ok) {
+      const saved: BlogPost = await res.json();
+      setPosts((prev) =>
+        prev.map((post) => (post.id === id ? saved : post))
+      );
+    }
   };
 
-  const deletePost = (id: string) => {
+  const deletePost = async (id: string) => {
+    await fetch(`/api/posts/${id}`, { method: 'DELETE' });
     setPosts((prev) => prev.filter((post) => post.id !== id));
   };
 
