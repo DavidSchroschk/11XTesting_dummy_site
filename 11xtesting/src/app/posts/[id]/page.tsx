@@ -1,30 +1,12 @@
 'use client';
-import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { useBlog, BlogPost } from '../../context/BlogContext';
+import { useBlog } from '../../context/BlogContext';
 import { useAuth } from '../../context/AuthContext';
 
 export default function PostPage() {
   const { posts, deletePost } = useBlog();
   const { isAuthenticated } = useAuth();
-  const [post, setPost] = useState<BlogPost | null>(null);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    const found = posts.find((p) => String(p.id) === id);
-    if (found) {
-      setPost(found);
-      setLoading(false);
-    } else {
-      fetch(`/api/posts/${id}`)
-        .then((res) => (res.ok ? res.json() : null))
-        .then((data) => {
-          setPost(data);
-          setLoading(false);
-        });
-    }
-  }, [id, posts]);
-
-  if (loading) return <p>Loading...</p>;
+  const id = String(useParams());
   const router = useRouter();
 
   const post = posts.find((p) => String(p.id) === id);
