@@ -17,7 +17,7 @@ export default function Home() {
   return (
     <main style={styles.main}>
       <header style={styles.header}>
-        <h1 style={styles.title}>My Blog</h1>
+        <h1 style={styles.title}>Web3 Dev Blog</h1>
         <div style={{ display: 'flex', gap: '1rem' }}>
           {isAuthenticated ? (
             <>

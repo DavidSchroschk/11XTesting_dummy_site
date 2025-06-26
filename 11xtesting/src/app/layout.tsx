@@ -15,8 +15,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Dev Blog Demo",
-  description: "A small blogging demo powered by Next.js and Prisma",
+  title: "Web3 Dev Blog",
+  description: "A web3-themed blogging demo powered by Next.js and Prisma",
+  icons: {
+    icon: "/web3.svg",
+  },
 };
 
 export default function RootLayout({
