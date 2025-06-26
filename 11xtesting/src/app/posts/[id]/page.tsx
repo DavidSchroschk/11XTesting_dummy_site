@@ -9,7 +9,7 @@ export default function PostPage() {
   const { id } = useParams();
   const router = useRouter();
 
-  const post = posts.find((p) => p.id === id);
+  const post = posts.find((p) => String(p.id) === id);
 
   if (!post) return <h1>Post Not Found</h1>;
 

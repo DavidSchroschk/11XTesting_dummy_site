@@ -5,11 +5,11 @@ import { useBlog } from '../context/BlogContext';
 
 export default function CreatePostPage() {
   const searchParams = useSearchParams();
-  const editingId = searchParams.get('id');
+  const editingId = searchParams?.get('id');
   const { posts, addPost, updatePost } = useBlog();
   const router = useRouter();
 
-  const editingPost = posts.find((p) => p.id === editingId);
+  const editingPost = posts.find((p) => String(p.id) === editingId);
 
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');

@@ -53,14 +53,14 @@ export function BlogProvider({ children }: { children: ReactNode }) {
     if (res.ok) {
       const saved: BlogPost = await res.json();
       setPosts((prev) =>
-        prev.map((post) => (post.id === id ? saved : post))
+        prev.map((post) => (String(post.id) === id ? saved : post))
       );
     }
   };
 
   const deletePost = async (id: string) => {
     await fetch(`/api/posts/${id}`, { method: 'DELETE' });
-    setPosts((prev) => prev.filter((post) => post.id !== id));
+    setPosts((prev) => prev.filter((post) => String(post.id) !== id));
   };
 
 
