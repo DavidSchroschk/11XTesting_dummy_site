@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { getPost, updatePost, deletePost } from '@/lib/db';
 
 export async function GET(
-  req: NextRequest,
+  req: Request,
   { params }: { params: { id: string } }
 ) {
   const post = await getPost(params.id);
@@ -13,7 +13,7 @@ export async function GET(
 }
 
 export async function PUT(
-  req: NextRequest,
+  req: Request,
   { params }: { params: { id: string } }
 ) {
   const data = await req.json();
@@ -26,7 +26,7 @@ export async function PUT(
 }
 
 export async function DELETE(
-  req: NextRequest,
+  req: Request,
   { params }: { params: { id: string } }
 ) {
   await deletePost(params.id);
