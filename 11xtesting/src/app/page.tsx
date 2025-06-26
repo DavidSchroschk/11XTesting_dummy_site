@@ -18,42 +18,45 @@ export default function Home() {
     <div style={styles.layout}>
       {/* Sidebar */}
       <aside style={styles.sidebar}>
-        <div style={styles.sidebarInner}>
-          <Link href="/" style={styles.logo}>
-            Web3 Dev Blog
-          </Link>
+        <div style={styles.sidebarContainer}>
+          {/* Top section */}
+          <div style={styles.sidebarTop}>
+            <Link href="/" style={styles.logo}>
+              Web3 Dev Blog
+            </Link>
 
-          <div style={styles.section}>
-            {isAuthenticated ? (
-              <button onClick={logout} style={{ ...styles.sidebarItem, ...styles.logoutButton }}>
-                Logout
-              </button>
-            ) : (
-              <Link href="/login" style={{ ...styles.sidebarItem, ...styles.loginButton }}>
-                Login
-              </Link>
-            )}
-          </div>
+            <div style={styles.section}>
+              {isAuthenticated ? (
+                <button onClick={logout} style={{ ...styles.sidebarItem, ...styles.logoutButton }}>
+                  Logout
+                </button>
+              ) : (
+                <Link href="/login" style={{ ...styles.sidebarItem, ...styles.loginButton }}>
+                  Login
+                </Link>
+              )}
+            </div>
 
-          {isAuthenticated && (
-            <>
+            {isAuthenticated && (
               <div style={styles.section}>
                 <button onClick={handleCreatePost} style={{ ...styles.sidebarItem, ...styles.createButton }}>
                   Create Post
                 </button>
               </div>
+            )}
+          </div>
 
-              <div style={styles.manageSection}>
-                <h4 style={styles.sectionTitle}>Manage</h4>
-                <nav style={styles.navList}>
-                  <Link href="/my-posts" style={styles.navLink}>My Posts</Link>
-                  <Link href="/drafts" style={styles.navLink}>Drafts</Link>
-                  <Link href="/bookmarks" style={styles.navLink}>Bookmarks</Link>
-                  <Link href="/account" style={styles.navLink}>Account</Link>
-                  <Link href="/settings" style={styles.navLink}>Settings</Link>
-                </nav>
-              </div>
-            </>
+          {/* Bottom section: "Manage" links */}
+          {isAuthenticated && (
+            <div style={styles.sidebarBottom}>
+              <nav style={styles.navList}>
+                <Link href="/my-posts" style={styles.navLink}>My Posts</Link>
+                <Link href="/drafts" style={styles.navLink}>Drafts</Link>
+                <Link href="/bookmarks" style={styles.navLink}>Bookmarks</Link>
+                <Link href="/account" style={styles.navLink}>Account</Link>
+                <Link href="/settings" style={styles.navLink}>Settings</Link>
+              </nav>
+            </div>
           )}
         </div>
       </aside>
@@ -111,30 +114,43 @@ const styles = {
     backgroundColor: '#111827',
     color: '#fff',
     padding: '2rem 1.5rem',
-    display: 'flex',
-    flexDirection: 'column',
     position: 'fixed',
     top: 0,
     left: 0,
     height: '100vh',
-    overflowY: 'auto',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
     zIndex: 1000,
   },
-  sidebarInner: {
+  sidebarContainer: {
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  },
+  sidebarTop: {
     display: 'flex',
     flexDirection: 'column',
     gap: '2rem',
   },
-  section: {
+  sidebarBottom: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '1rem',
+    gap: '0.75rem',
+    paddingTop: '1rem',
+    borderTop: '1px solid #374151',
   },
   logo: {
     fontSize: '1.75rem',
     textDecoration: 'none',
     color: '#fff',
     fontWeight: 'bold',
+  },
+  section: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '1rem',
   },
   sidebarItem: {
     padding: '0.6rem 1rem',
@@ -160,19 +176,6 @@ const styles = {
   createButton: {
     backgroundColor: '#4f46e5',
     color: '#fff',
-  },
-  manageSection: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '0.5rem',
-  },
-  sectionTitle: {
-    fontSize: '0.9rem',
-    fontWeight: 'bold',
-    color: '#94a3b8',
-    marginBottom: '0.25rem',
-    textTransform: 'uppercase',
-    letterSpacing: '0.05em',
   },
   navList: {
     display: 'flex',
