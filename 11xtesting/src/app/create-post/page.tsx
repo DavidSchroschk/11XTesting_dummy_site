@@ -28,13 +28,13 @@ const CreatePostPage: React.FC = () => {
     if (editingId) {
       updatePost(editingId, {
         title,
-        summary: body.slice(0, 100) + '...',
+        summary: body.length > 100? body.slice(0, 100) + '...': body,
         body,
       });
     } else {
       addPost({
         title,
-        summary: body.slice(0, 100) + '...',
+        summary: body.length > 100? body.slice(0, 100) + '...': body,
         body,
       });
     }
