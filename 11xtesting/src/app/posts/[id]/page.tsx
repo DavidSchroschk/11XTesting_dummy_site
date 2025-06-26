@@ -6,8 +6,9 @@ import { useAuth } from '../../context/AuthContext';
 export default function PostPage() {
   const { posts, deletePost } = useBlog();
   const { isAuthenticated } = useAuth();
-  const { id } = useParams();
+  const params = useParams();
   const router = useRouter();
+  const id = params?.id;
 
   const post = posts.find((p) => String(p.id) === id);
 
