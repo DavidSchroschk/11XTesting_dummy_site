@@ -5,7 +5,7 @@ export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const post = getPost(params.id);
+  const post = await getPost(params.id);
   if (!post) {
     return NextResponse.json({ error: 'Not found' }, { status: 404 });
   }
@@ -17,7 +17,7 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   const data = await req.json();
-  const updated = updatePost(params.id, {
+  const updated = await updatePost(params.id, {
     title: data.title,
     summary: data.summary,
     body: data.body,
@@ -29,6 +29,6 @@ export async function DELETE(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  deletePost(params.id);
+  await deletePost(params.id);
   return NextResponse.json({ success: true });
 }

@@ -11,9 +11,14 @@ export default function LoginPage() {
   const router = useRouter();
   const { login } = useAuth();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (username === 'admin' && password === 'password123') {
+    const res = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password }),
+    });
+    if (res.ok) {
       login();
       router.push('/');
     } else {

@@ -1,47 +1,32 @@
-import Database from 'better-sqlite3';
-import path from 'path';
+import { prisma } from './prisma';
 
 export type DBPost = {
-  id: string;
+  id: number;
   title: string;
   summary: string;
   body: string;
 };
 
-const dbPath = path.join(process.cwd(), 'database.db');
-const db = new Database(dbPath);
-
-db.pragma('journal_mode = WAL');
-db.exec(`
-  CREATE TABLE IF NOT EXISTS posts (
-    id TEXT PRIMARY KEY,
-    title TEXT NOT NULL,
-    summary TEXT NOT NULL,
-    body TEXT NOT NULL
-  );
-`);
-
-export function getAllPosts(): DBPost[] {
-  return db.prepare('SELECT * FROM posts').all();
+export async function getAllPosts(): Promise<DBPost[]> {
+  return prisma.post.findMany({ orderBy: { id: 'desc' } });
 }
 
-export function getPost(id: string): DBPost | undefined {
-  return db.prepare('SELECT * FROM posts WHERE id = ?').get(id);
+export async function getPost(id: string): Promise<DBPost | null> {
+  return prisma.post.findUnique({ where: { id: Number(id) } });
 }
 
-export function createPost(post: Omit<DBPost, "id">): DBPost {
-  const id = crypto.randomUUID();
-  db.prepare('INSERT INTO posts (id, title, summary, body) VALUES (?, ?, ?, ?)')
-    .run(id, post.title, post.summary, post.body);
-  return { id, ...post };
+export async function createPost(post: Omit<DBPost, 'id'>): Promise<DBPost> {
+  return prisma.post.create({ data: post });
 }
 
-export function updatePost(id: string, post: Omit<DBPost, "id">): DBPost {
-  db.prepare('UPDATE posts SET title = ?, summary = ?, body = ? WHERE id = ?')
-    .run(post.title, post.summary, post.body, id);
-  return { id, ...post };
+export async function updatePost(id: string, post: Omit<DBPost, 'id'>): Promise<DBPost> {
+  return prisma.post.update({ where: { id: Number(id) }, data: post });
 }
 
-export function deletePost(id: string): void {
-  db.prepare('DELETE FROM posts WHERE id = ?').run(id);
+export async function deletePost(id: string): Promise<void> {
+  await prisma.post.delete({ where: { id: Number(id) } });
+}
+
+export async function findUser(username: string) {
+  return prisma.user.findUnique({ where: { username } });
 }
