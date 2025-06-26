@@ -2,15 +2,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, install the project dependencies using the provided setup script:
-
-```bash
-./setup.sh
-```
-
-You can optionally pass additional npm packages to the script which will be installed alongside the default dependencies.
-
-After setup completes, run the development server:
+First, run the development server:
 
 ```bash
 npm run dev
