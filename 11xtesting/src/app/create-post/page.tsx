@@ -5,7 +5,7 @@ import { useBlog } from '../context/BlogContext';
 
 export default function CreatePostPage() {
   const searchParams = useSearchParams();
-  const editingId = searchParams.get('id');
+  const editingId = searchParams?.get('id');
   const { posts, addPost, updatePost } = useBlog();
   const router = useRouter();
 
