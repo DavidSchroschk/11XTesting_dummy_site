@@ -1,9 +1,9 @@
 'use client';
-import React, { useEffect, useState, Suspense } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useBlog } from '../context/BlogContext';
 
-const CreatePostPage: React.FC = () => {
+export default function CreatePostPage() {
   const searchParams = useSearchParams();
   const editingId = searchParams?.get('id');
   const { posts, addPost, updatePost } = useBlog();
@@ -70,12 +70,6 @@ const CreatePostPage: React.FC = () => {
   );
 }
 
-const PageWithSuspense: React.FC = () => (
-  <Suspense fallback={<div>Loading...</div>}>
-    <CreatePostPage />
-  </Suspense>
-)
-
 const inputStyle = {
   padding: '1rem',
   fontSize: '1rem',
@@ -92,5 +86,3 @@ const buttonStyle = {
   borderRadius: '6px',
   cursor: 'pointer',
 };
-
-export default PageWithSuspense;

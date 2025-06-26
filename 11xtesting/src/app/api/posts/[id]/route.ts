@@ -3,10 +3,9 @@ import { getPost, updatePost, deletePost } from '@/lib/db';
 
 export async function GET(
   req: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
-  const { id } = await params;
-  const post = await getPost(id);
+  const post = await getPost(params.id);
   if (!post) {
     return NextResponse.json({ error: 'Not found' }, { status: 404 });
   }
@@ -15,11 +14,10 @@ export async function GET(
 
 export async function PUT(
   req: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
-  const { id } = await params;
   const data = await req.json();
-  const updated = await updatePost(id, {
+  const updated = await updatePost(params.id, {
     title: data.title,
     summary: data.summary,
     body: data.body,
@@ -29,9 +27,8 @@ export async function PUT(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
-  const { id } = await params;
-  await deletePost(id);
+  await deletePost(params.id);
   return NextResponse.json({ success: true });
 }
